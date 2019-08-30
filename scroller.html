@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    *{
+      margin:0;padding:0;
+    }
+    body{margin:0 20px;}
+    .banner{width:90%;height:400px;margin:0 auto;background-color: #666666}
+    .navBox{
+      left:0;
+      position: absolute;
+      top:400px;
+      width:100%;
+      height: 80px;
+    }
+    .navigation-bar{
+      display: flex;
+      list-style: none;
+      justify-content: space-between;
+      width:90%;
+      height: 100%;
+      margin: 0 auto;
+    }
+    .navigation-bar>a{
+      width:calc(100% / 6);
+      height:60px;
+      color:#333333;
+      line-height: 60px;
+      text-align: center;
+      border:1px solid #ee9900;
+      display: block;
+      background-color: white;
+    }
+    .navigation-bar>a:hover,.navigation-bar>a.active{
+      background-color: #ee9900;
+      color:white;
+      box-shadow: 0 8px 10px 5px #cccccc;
+    }
+    .contain{
+      padding:10px;
+    }
+    .contain>div{
+      width:80%;
+      height:800px;
+      margin:10px auto;
+    }
+    div#m1{background-color: #0a76a4;}
+    div#m2{background-color: #0C5404;}
+    div#m3{background-color: #2d3a4b ;}
+    div#m4{background-color: #a13e0d;}
+    div#m5{background-color: #9da408;}
+    div#m6{background-color: orange;}
+  </style>
+</head>
+<body>
+  <div class = "banner"></div>
+  <div class = "preHeight" style="height: 80px;width: 100%"></div>
+  <div class="navBox">
+    <div class = "navigation-bar">
+      <a class="active">模块一</a>
+      <a>模块二</a>
+      <a>模块三</a>
+      <a>模块四</a>
+      <a>模块五</a>
+      <a>模块六</a>
+    </div>
+  </div>
+  <div class="contain">
+    <div id = 'm1'></div>
+    <div id = 'm2'></div>
+    <div id = 'm3'></div>
+    <div id = 'm4'></div>
+    <div id = 'm5'></div>
+    <div id = 'm6'></div>
+  </div>
+  <script>
+    const navbar = document.querySelector('.navBox')
+    const btns = document.querySelector('.navigation-bar').children
+    const height1 = document.getElementById('m1').offsetTop
+    const height2 = document.getElementById('m2').offsetTop
+    const height3 = document.getElementById('m3').offsetTop
+    const height4 = document.getElementById('m4').offsetTop
+    const height5 = document.getElementById('m5').offsetTop
+    const height6 = document.getElementById('m6').offsetTop
+    navbar.addEventListener('click',e => {
+      let btn = e.target
+      if(btn.nodeName === "A"){
+        for(let i=0; i<btns.length; i++){
+          if (btn === btns[i]){
+            btns[i].className="active"
+          }else{
+            btns[i].className=""
+          }
+        }
+        let element
+        switch (btn.innerHTML) {
+          case '模块一':
+            element = height1 - 60
+            break
+          case '模块二':
+            element = height2 - 60
+            break
+          case '模块三':
+            element = height3 - 60
+            break
+          case '模块四':
+            element = height4 - 60
+            break
+          case '模块五':
+            element = height5 - 60
+            break
+          default:
+            element = height6 - 60
+            break
+        }
+        window.scrollTo(0, element)
+      }
+    })
+    // for (let i=0;i<btns.length;i++){
+    //   btns[i].addEventListener('click',()=>{
+    //     for (let j=0;j<btns.length;j++){
+    //       if(btns[i] === btns[j]){
+    //         btns[j].className="active"
+    //       }else{
+    //         btns[j].className=''
+    //       }
+    //     }
+    //     let element
+    //     switch (btns[i].innerHTML) {
+    //       case '模块一':
+    //         element = height1 - 60
+    //         break
+    //       case '模块二':
+    //         element = height2 - 60
+    //         break
+    //       case '模块三':
+    //         element = height3 - 60
+    //         break
+    //       case '模块四':
+    //         element = height4 - 60
+    //         break
+    //       case '模块五':
+    //         element = height5 - 60
+    //         break
+    //       default:
+    //         element = height6 - 60
+    //         break
+    //     }
+    //     window.scrollTo(0, element)
+    //   })
+    // }
+    //可以记录实时的scrollTop
+    window.addEventListener('scroll', ()=>{
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      //滚动条距浏览器顶部高度
+      console.log(scrollTop)
+      //保持导航栏一直在视窗顶部
+      if(scrollTop>=400){
+        navbar.style.position = 'fixed'
+        navbar.style.top = '0'
+      }else{
+        navbar.style.position = 'absolute'
+        navbar.style.top = '400px'
+      }
+      //滚动条滚动，导航栏颜色随之切换
+      handleScroll(0,height2-100,'模块一')
+      handleScroll(height2-100,height3-100,'模块二')
+      handleScroll(height3-100,height4-100,'模块三')
+      handleScroll(height4-100,height5-100,'模块四')
+      handleScroll(height5-100,height6-150,'模块五')
+      handleScroll(height6-150,height6+document.getElementById('m6').clientHeight,'模块六')
+      console.log(height6-150)
+    })
+    function handleScroll(h1,h2,btn){
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      if (scrollTop < h2 && scrollTop >= h1) {
+        let title = btn
+        for (let i = 0; i < btns.length; i++){
+          if (title === btns[i].innerHTML){
+            btns[i].className = 'active'
+          }else{
+            btns[i].className = ''
+          }
+        }
+      }
+    }
+  </script>
+</body>
+</html>
